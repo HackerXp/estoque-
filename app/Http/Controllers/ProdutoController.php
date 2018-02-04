@@ -3,6 +3,7 @@
 namespace Eleicao\Http\Controllers;
 
 //use Eleicao\Produto;
+use Eleicao\Http\Requests\ProdutoRequest;
 use Illuminate\Http\Request;
 use Eleicao\Models\Painel\Produto;
 class ProdutoController extends Controller
@@ -16,18 +17,25 @@ class ProdutoController extends Controller
 
     public function create()
     {
-        $valor="Teste do metodo create";
+        $valor="Novo produto";
         return view('produto.create',compact('valor'));
     }
 
-    public function edit()
+    public function store(ProdutoRequest $request)
     {
-        $valor="Teste do metodo edit";
-        return view('produto.edit',compact('valor'));
+        $input = $request->all();
+        Produto::create($input);
+        return redirect('produtos');
+    }
+    public function edit($id)
+    {
+        $produto = Produto::find($id);
+        return view('produtos.edit', compact('produto'));
     }
 
-    public function destroy()
+    public function destroy($id)
     {
-        return "Tet";
+        Produto::find($id)->delete();
+        return redirect('produtos');
     }
 }
